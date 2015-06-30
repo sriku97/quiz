@@ -52,7 +52,7 @@ body
 	margin-top: 25px;
 	font-size: 130%;
 }
-#ask,#discover,#rise
+#carouselData
 {
 	font-size: 300px;
 	line-height: 350px;
@@ -79,10 +79,10 @@ body
 		<div class="col-lg-4">
 		</div>
 		<div class="col-lg-2">
-			<button id="login" type="button" class="btn btn-danger btn-lg btn-block">Login</button>
+			<a id="login" href="login" role="button" class="btn btn-danger btn-lg btn-block">Login</a>
 	    </div>
 	    <div class="col-lg-2">
-			<button id="signup" type="button" class="btn btn-success btn-lg btn-block">Sign Up</button>
+			<a id="signup" href="signup" role="button" class="btn btn-success btn-lg btn-block">Sign Up</a>
 	    </div>
 	</div>
 	<div class="row">
@@ -99,22 +99,22 @@ body
 				<div class="item active">
 					<h1 id="carouselHeading">Ask a question</h1>
 					<br>
-					<p id="ask">?</p>
+					<p id="carouselData">?</p>
 				</div>
 				<div class="item">
 					<h1 id="carouselHeading">Discover answers</h1>
 					<br>
-					<p id="discover">!</p>
+					<p id="carouselData">!</p>
 				</div>
 				<div class="item">
 					<h1 id="carouselHeading">Rise to the top</h1>
 					<br>
-					<p id="rise">&#9818</p>
+					<p id="carouselData">&#9818</p>
 				</div>
 				<div class="item">
 					<h1 id="carouselHeading">Get addicted</h1>
 					<br>
-					<p id="rise">&#8734</p>
+					<p id="carouselData">&#8734</p>
 				</div>
 			</div>
 
