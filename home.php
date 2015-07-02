@@ -14,6 +14,7 @@
 <title>Spider Web Development task 3</title>
 
 <style>
+
 html
 {
 	height: 100%;
@@ -64,28 +65,52 @@ body
 	color: white;
 	font-family: Ubuntu;
 }
+
 </style>
 
 </head>
 
 <body>
+
+
+<?php
+    session_start();
+    if(isset($_SESSION['loggedin'])&&isset($_SESSION['username']))
+    {
+    	header('Location: profile');
+    	exit;
+    }
+?>
+
+
 <div class="container-fluid">
+
+	
 	<div class="row">
+		
 		<div class="col-lg-1">
-		</div>
+	    </div>
+		
 		<div class="col-lg-3">
 			<h1 class="logo">The Spider Quiz</h1>
 		</div>
+		
 		<div class="col-lg-4">
 		</div>
+		
 		<div class="col-lg-2">
 			<a id="login" href="login" role="button" class="btn btn-danger btn-lg btn-block">Login</a>
 	    </div>
+	    
 	    <div class="col-lg-2">
 			<a id="signup" href="signup" role="button" class="btn btn-success btn-lg btn-block">Sign Up</a>
 	    </div>
+	
 	</div>
+
+
 	<div class="row">
+		
 		<div id="mainCarousel" class="carousel slide" data-interval="5000" data-ride="carousel">
 			
 			<ol class="carousel-indicators">
@@ -127,6 +152,8 @@ body
 
 		</div>
 	</div>
+
+
 </div>
 </body>
 
