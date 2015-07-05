@@ -14,6 +14,7 @@
     }
 
     $result=DB::table('quiz_users')->where('username',$username)->first();
+    
     if(empty($result))
     {
     	echo "<script>window.alert('Username doesn't exist');</script>";

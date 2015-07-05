@@ -27,6 +27,14 @@ Route::get('profile', function(){
 	return view('profile');
 });
 
+Route::get('ask', function(){
+	return view('ask');
+});
+
+Route::get('myquestions', function(){
+	return view('myquestions');
+});
+
 Route::get('logout', function(){
 	return view('logout');
 });
@@ -39,7 +47,16 @@ Route::post('processLogIn', function(){
 	return view('processLogIn');
 });
 
+Route::post('submitquestion', function(){
+	return view('submitquestion');
+});
+
 Route::get('verifyUsername/{username}',function($username){
 	$data['username']=$username;
 	return View::make('verifyUsername',$data);
+});
+
+Route::get('viewquestion/{qid}',function($qid){
+	$data['qid']=$qid;
+	return View::make('viewquestion',$data);
 });

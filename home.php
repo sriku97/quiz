@@ -75,6 +75,7 @@ body
 
 <?php
     session_start();
+    
     if(isset($_SESSION['loggedin'])&&isset($_SESSION['username']))
     {
     	header('Location: profile');
@@ -121,36 +122,43 @@ body
 			</ol>
 
 			<div class="carousel-inner" role="listbox">
+				
 				<div class="item active">
 					<h1 id="carouselHeading">Ask a question</h1>
 					<br>
 					<p id="carouselData">?</p>
 				</div>
+				
 				<div class="item">
 					<h1 id="carouselHeading">Discover answers</h1>
 					<br>
 					<p id="carouselData">!</p>
 				</div>
+				
 				<div class="item">
 					<h1 id="carouselHeading">Rise to the top</h1>
 					<br>
 					<p id="carouselData">&#9818</p>
 				</div>
+				
 				<div class="item">
 					<h1 id="carouselHeading">Get addicted</h1>
 					<br>
 					<p id="carouselData">&#8734</p>
 				</div>
+			
 			</div>
 
 			<a class="carousel-control left" href="#mainCarousel" data-slide="prev">
             <span class="glyphicon glyphicon-chevron-left"></span>
             </a>
+            
             <a class="carousel-control right" href="#mainCarousel" data-slide="next">
             <span class="glyphicon glyphicon-chevron-right"></span>
             </a>
 
 		</div>
+	
 	</div>
 
 
