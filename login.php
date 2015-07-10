@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
@@ -18,10 +19,15 @@
 $(document).ready(function()
 {
    
+    /*For validation of input, certain restrictions are imposed on form inputs. Username
+	  only accepts alphanumeric characters, and password accepts no spaces. Copying, 
+	  cutting and pasting are also prevented in the text boxes. A tooltip is displayed 
+	  when the user hovers over the text box.*/
+
     $("#username").keypress(function(e)
 	{
 		var code=(e.which)?e.which:e.keyCode;
-		if(code<48||(code>57&&code<65)||(code>90&&code<97)||code>122)
+		if(code<8||(code>9&&code<48)||(code>57&&code<65)||(code>90&&code<97)||code>122)
 		{
 			e.preventDefault();
 		}
@@ -36,6 +42,11 @@ $(document).ready(function()
 		}
 	});
 
+	$('#username,#password').bind('copy paste cut',function(e)
+	{ 
+        e.preventDefault();
+    });
+
 	$("[data-toggle='tooltip']").tooltip({
         placement : 'top'
     });
@@ -43,6 +54,8 @@ $(document).ready(function()
 
 function displayError()
 {
+	/*If the password entered is wrong this function is called, which displays the error message.*/
+
 	$(document).ready(function()
 	{   
 	    $("#wrongpassword").show();
@@ -52,6 +65,9 @@ function displayError()
 
 function removeError()
 {
+	/*In the case that no wrong input has occured, this function is called and the div that contains
+	the error message is hiddem.*/
+
 	$(document).ready(function()
 	{   
 	    $("#wrongpassword").hide();
@@ -87,10 +103,14 @@ body
 	border-radius: 10px;
 	background-color: rgba(0,0,0,0.6);
 	border-width: 1px;
+	animation-name: fade;
+	animation-duration: 0.25s;
+	-webkit-animation-name: fade;
+	-webkit-animation-duration: 0.25s;
 }
-label
+#formheading
 {
-	font-size: 150%;
+	text-align: center;
 	font-family: Ubuntu;
 	color: gray;
 }
@@ -98,11 +118,20 @@ label
 {
 	margin-top: 45px;
 }
-#formheading
+label
 {
-	text-align: center;
+	font-size: 150%;
 	font-family: Ubuntu;
 	color: gray;
+}
+#wrongpassword
+{
+	text-align: center;
+	color: red;
+}
+.submitdiv
+{
+	text-align: center;
 }
 #linkToSignUp
 {
@@ -111,14 +140,19 @@ label
 	color: red;
 	font-family: Ubuntu;
 }
-.submitdiv
+@keyframes fade
 {
-	text-align: center;
+	0%
+	{
+		opacity: 0.5;
+	}
 }
-#wrongpassword
+@-webkit-keyframes fade
 {
-	text-align: center;
-	color: red;
+	0%
+	{
+		opacity: 0.5;
+	}
 }
 
 </style>
@@ -129,8 +163,13 @@ label
 
 
 <?php
+    
+    /*In the page that processes the login form, if the wrong password has been entered, the session
+    variable 'wrongpassword' is set to true, and the user is redirected back to this page. Based on 
+    the value of the variable, the error message is displayed*/
 
     session_start();
+
     if(isset($_SESSION['wrongpassword']))
     {
     	if($_SESSION['wrongpassword']==true)
@@ -140,12 +179,17 @@ label
     {
         echo "<script>removeError();</script>";    	
     }
+
+    /*If the user is already logged in, then the user is redirected to the main profile page. This
+    is done with the help of session variables 'loggedin' and 'username' which store the state of
+    logged-inness, and the username of the logged in user.*/
+
     if(isset($_SESSION['loggedin'])&&isset($_SESSION['username']))
     {
-    	echo "<script>window.alert('Please Log Out first.')</script>";
     	header('Location: profile');
     	exit;
     }
+
 ?>
 
 

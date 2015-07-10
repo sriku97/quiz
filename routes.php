@@ -11,52 +11,102 @@
 |
 */
 
-Route::get('/', function () {
+Route::get('/', function() 
+{ 
     return view('home');
 });
 
-Route::get('signup', function(){
+
+Route::get('signup', function()
+{
 	return view('signup');
 });
 
-Route::get('login', function(){
+
+Route::get('login', function()
+{
 	return view('login');
 });
 
-Route::get('profile', function(){
+
+Route::get('profile', function()
+{
 	return view('profile');
 });
 
-Route::get('ask', function(){
+
+Route::get('ask', function()
+{
 	return view('ask');
 });
 
-Route::get('myquestions', function(){
+
+Route::get('answer', function()
+{
+	return view('answer');
+});
+
+
+Route::get('leaderboard', function()
+{
+	return view('leaderboard');
+});
+
+
+Route::get('myquestions', function()
+{
 	return view('myquestions');
 });
 
-Route::get('logout', function(){
+
+Route::get('logout', function()
+{
 	return view('logout');
 });
 
-Route::post('processSignUp', function(){
+
+Route::post('processSignUp', function()
+{
 	return view('processSignUp');
 });
 
-Route::post('processLogIn', function(){
+
+Route::post('processLogIn', function()
+{
 	return view('processLogIn');
 });
 
-Route::post('submitquestion', function(){
+
+Route::post('submitquestion', function()
+{
 	return view('submitquestion');
 });
 
-Route::get('verifyUsername/{username}',function($username){
+
+Route::get('verifyUsername/{username}', function($username)
+{
 	$data['username']=$username;
 	return View::make('verifyUsername',$data);
 });
 
-Route::get('viewquestion/{qid}',function($qid){
+
+Route::get('viewquestion/{qid}', function($qid)
+{
 	$data['qid']=$qid;
 	return View::make('viewquestion',$data);
+});
+
+
+Route::get('answer/{qid}', function($qid)
+{
+	$data['qid']=$qid;
+	return View::make('answerquestion',$data);
+});
+
+
+Route::get('evaluateAnswer/{qid}/{answer}', function($qid,$answer)
+{
+	$data['qid']=$qid;
+	$data['answer']=$answer;
+	return View::make('evaluateAnswer',$data);
 });

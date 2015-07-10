@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
@@ -15,13 +16,23 @@
 
 <script>
 
-$(document).ready(function(){
+$(document).ready(function()
+{
 
-	$(".questionlistitems").click(function(){
+    /*On clicking each question on the left, the full question is displayed on the right. For this
+    purpose, the qid which is stored in a custom attribute of the div in which the question is 
+    displayed is picked out, and sent to a file, that sends the details of the questions, through an
+    AJAX request as a parameter. The details of the questions are obtained in JSON format. The JSON 
+    string is parsed, and the details of the question are displayed in their respective divs. The 
+    correct option is displayed in green colour.*/
+
+	$(".questionlistitems").click(function()
+    {
 		
 		var qid=$(this).attr("data-qid");
 		
-		$.ajax({
+		$.ajax(
+        {
     		async: false,
     		type:"GET",
     		success: function(result)
@@ -81,6 +92,10 @@ body
 	background: -moz-linear-gradient(black, blue);
 	background: -o-linear-gradient(black, blue);
 	background: -webkit-linear-gradient(black, blue);
+    animation-name: fade;
+    animation-duration: 0.25s;
+    -webkit-animation-name: fade;
+    -webkit-animation-duration: 0.25s;
 }
 .logo
 {
@@ -99,6 +114,7 @@ body
 {
 	font-family: Ubuntu;
 	font-size: 120%;
+    text-align: left;
 }
 .questionlist
 {
@@ -130,14 +146,37 @@ body
 {
 	color:white;
 }
+@keyframes fade
+{
+    0%
+    {
+        opacity: 0.5;
+    }
+}
+@-webkit-keyframes fade
+{
+    0%
+    {
+        opacity: 0.5;
+    }
+}
 
 </style>
+
+</head>
 
 <body>
 
 
 <?php 
+    
     session_start();
+
+    /*If not logged in, redirect to the login page. Login details are stored in the session variables 
+    'loggedin','username' and 'wrongpassword'. 'Loggedin' stores a boolean value that is used to check 
+    whether the user is logged in. 'Username' stores the username of the logged-in user. 'Wrongpassword'
+    stores a boolean value. If the value is true, then the user has entered the wrong password at the 
+    login page this is used to show the error message at the login page*/
 
     if(!isset($_SESSION['loggedin'])||!isset($_SESSION['username'])||$_SESSION['wrongpassword']==true)
     {
@@ -145,10 +184,15 @@ body
     	exit;
     }
 
+    //obtain user details
     $username=$_SESSION['username'];
     $user=DB::table('quiz_users')->where('username',$username)->first();
 
+    //obtain questions to display
     $questions=DB::table('questions')->where('username',$username)->get();
+
+    //obtain user score
+    $score=DB::table('scores')->where('username',$username)->first();
 
 ?>
 
@@ -172,12 +216,18 @@ body
 			
 			<div class="dropdown">
                 
-                <button class="btn btn-warning btn-lg btn-block dropdown-toggle" id="welcome" type="button" data-toggle="dropdown">Welcome, <?php echo $user->name; ?>
+                <button class="btn btn-warning btn-lg btn-block dropdown-toggle" id="welcome" type="button" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> Welcome, <?php echo $user->name; ?>
                 <span class="caret"></span></button>
                 
                 <ul class="dropdown-menu dropdown-menu-right">
-                    <li id="dropdownlistitems"><a href="profile">Profile</a></li>
-                    <li id="dropdownlistitems"><a href="logout">Logout</a></li>
+                    
+                    <li id="dropdownlistitems"><a><span class="glyphicon glyphicon-tasks"></span> Score : <?php echo $score->score;?></a></li>
+                    <li id="dropdownlistitems"><a href="profile"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
+                    <li id="dropdownlistitems"><a href="ask"><span class="glyphicon glyphicon-question-sign"></span> Ask</a></li>
+                    <li id="dropdownlistitems"><a href="answer"><span class="glyphicon glyphicon-ok-circle"></span> Answer</a></li>
+                    <li id="dropdownlistitems"><a href="myquestions"><span class="glyphicon glyphicon-paperclip"></span> My Questions</a></li>
+                    <li id="dropdownlistitems"><a href="logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+
                 </ul>
              
             </div>
@@ -193,7 +243,13 @@ body
     		
     		<?php
     		    
-    		    foreach($questions as $q)
+    		    /*The questions to display are obtained from the database and stored in an array
+                which is looped through. The questions are displayed in the left with the category,
+                which is a label. Each category has it's own colour. The qid of the question is stored
+                in a custom attribute called data-qid. On clicking each question, the full question 
+                with answer is displayed on the right.*/
+
+                foreach($questions as $q)
     		    {
     		    	switch($q->category)
     		    	{    

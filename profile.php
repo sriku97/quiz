@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
@@ -25,6 +26,10 @@ body
 	background: -moz-linear-gradient(black, blue);
 	background: -o-linear-gradient(black, blue);
 	background: -webkit-linear-gradient(black, blue);
+    animation-name: fade;
+    animation-duration: 0.5s;
+    -webkit-animation-name: fade;
+    -webkit-animation-duration: 0.5s;
 }
 .logo
 {
@@ -43,6 +48,7 @@ body
 {
 	font-family: Ubuntu;
 	font-size: 120%;
+    text-align: left;
 }
 #ask,#answer,#leaderboard,#myquestions
 {
@@ -52,10 +58,26 @@ body
 	color: white;
 	text-align: center; 
 }
-.nav
+.nav-tabs li 
 {
-	font-size: 110%;
-	font-family: Ubuntu;
+    font-size:150%;
+    width: 285px;
+    text-align: center;
+    font-family: Ubuntu;
+}
+@keyframes fade
+{
+    0%
+    {
+        opacity: 0;
+    }
+}
+@-webkit-keyframes fade
+{
+    0%
+    {
+        opacity: 0;
+    }
 }
 
 </style>
@@ -66,7 +88,14 @@ body
 
 
 <?php 
+   
     session_start();
+
+    /*If not logged in, redirect to the login page. Login details are stored in the session variables 
+    'loggedin','username' and 'wrongpassword'. 'Loggedin' stores a boolean value that is used to check 
+    whether the user is logged in. 'Username' stores the username of the logged-in user. 'Wrongpassword'
+    stores a boolean value. If the value is true, then the user has entered the wrong password at the 
+    login page this is used to show the error message at the login page*/
 
     if(!isset($_SESSION['loggedin'])||!isset($_SESSION['username'])||$_SESSION['wrongpassword']==true)
     {
@@ -74,8 +103,13 @@ body
     	exit;
     }
 
+    //obtain user details
     $username=$_SESSION['username'];
     $user=DB::table('quiz_users')->where('username',$username)->first();
+
+    //obtain user score
+    $score=DB::table('scores')->where('username',$username)->first();
+
 ?>
 
 
@@ -98,12 +132,18 @@ body
 			
 			<div class="dropdown">
                 
-                <button class="btn btn-warning btn-lg btn-block dropdown-toggle" id="welcome" type="button" data-toggle="dropdown">Welcome, <?php echo $user->name; ?>
+                <button class="btn btn-warning btn-lg btn-block dropdown-toggle" id="welcome" type="button" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> Welcome, <?php echo $user->name; ?>
                 <span class="caret"></span></button>
                 
                 <ul class="dropdown-menu dropdown-menu-right">
-                    <li id="dropdownlistitems"><a href="profile">Profile</a></li>
-                    <li id="dropdownlistitems"><a href="logout">Logout</a></li>
+                    
+                    <li id="dropdownlistitems"><a><span class="glyphicon glyphicon-tasks"></span> Score : <?php echo $score->score;?></a></li>
+                    <li id="dropdownlistitems"><a href="profile"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
+                    <li id="dropdownlistitems"><a href="ask"><span class="glyphicon glyphicon-question-sign"></span> Ask</a></li>
+                    <li id="dropdownlistitems"><a href="answer"><span class="glyphicon glyphicon-ok-circle"></span> Answer</a></li>
+                    <li id="dropdownlistitems"><a href="myquestions"><span class="glyphicon glyphicon-paperclip"></span> My Questions</a></li>
+                    <li id="dropdownlistitems"><a href="logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                
                 </ul>
              
             </div>
@@ -138,7 +178,7 @@ body
             	<br>
             	<h3>Find out where you stand</h3>
             	<br><br><br>
-            	<a href="leaderboard"><img src="leaderboard.jpg" class="img-thumbnail"></a>
+            	<a href="leaderboard" target="_BLANK"><img src="leaderboard.jpg" class="img-thumbnail"></a>
             </div>
 
             <div class="tab-pane fade" id="myquestions">

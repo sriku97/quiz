@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
@@ -17,10 +18,15 @@
 
 $(document).ready(function()
 {
+	/*For validation of input, certain restrictions are imposed on form inputs. Username
+	  only accepts alphanumeric characters, name accepts only letters and spaces, and password
+	  accepts no spaces. Copying, cutting and pasting are also prevented in the text boxes.
+	  A tooltip is displayed when the user hovers over the text box.*/
+
 	$("#username").keypress(function(e)
 	{
 		var code=(e.which)?e.which:e.keyCode;
-		if(code<48||(code>57&&code<65)||(code>90&&code<97)||code>122)
+		if(code<8||(code>9&&code<48)||(code>57&&code<65)||(code>90&&code<97)||code>122)
 		{
 			e.preventDefault();
 		}
@@ -29,7 +35,7 @@ $(document).ready(function()
 	$("#name").keypress(function(e)
 	{
 		var code=(e.which)?e.which:e.keyCode;
-		if(code<31||(code>33&&code<65)||(code>90&&code<97)||code>122)
+		if(code<8||(code>9&&code<31)||(code>33&&code<65)||(code>90&&code<97)||code>122)
 		{
 			e.preventDefault();
 		}
@@ -44,6 +50,11 @@ $(document).ready(function()
 		}
 	});
 
+	$('#username,#password,#name').bind('copy paste cut',function(e)
+	{ 
+        e.preventDefault();
+    });
+
 	$("[data-toggle='tooltip']").tooltip({
         placement : 'top'
     });
@@ -52,8 +63,15 @@ $(document).ready(function()
 
 function verifyUsername()
 {
+    	/*This is a function that is called to make sure that the username entered by the user is 
+    	not taken. This function is called right before the form is submitted. Only if the function
+    	returns true, the form will get submitted. Else, an error message is displayed. The validation
+    	takes place through an AJAX request sent to a route with the username as a parameter. Based
+    	on the response, the function returns either true or false.*/
+
     	var status;
     	var uname=$("#username").val();
+
     	$.ajax({
     		async: false,
     		type:"GET",
@@ -66,6 +84,7 @@ function verifyUsername()
     		},
     		url: "verifyUsername/"+uname
     	});
+
     	if(status==true)
     	    return true;
     	else
@@ -103,6 +122,10 @@ body
 	border-radius: 10px;
 	background-color: rgba(0,0,0,0.6);
 	border-width: 1px;
+	animation-name: fade;
+	animation-duration: 0.25s;
+	-webkit-animation-name: fade;
+	-webkit-animation-duration: 0.25s;
 }
 label
 {
@@ -110,15 +133,19 @@ label
 	font-family: Ubuntu;
 	color: gray;
 }
-.form-group
-{
-	margin-top: 45px;
-}
 #formheading
 {
 	text-align: center;
 	font-family: Ubuntu;
 	color: gray;
+}
+.form-group
+{
+	margin-top: 45px;
+}
+.submitdiv
+{
+	text-align: center;
 }
 #linkToLogIn
 {
@@ -127,9 +154,19 @@ label
 	color: red;
 	font-family: Ubuntu;
 }
-.submitdiv
+@keyframes fade
 {
-	text-align: center;
+	0%
+	{
+		opacity: 0.5;
+	}
+}
+@-webkit-keyframes fade
+{
+	0%
+	{
+		opacity: 0.5;
+	}
 }
 
 </style>
@@ -140,13 +177,19 @@ label
 
 
 <?php
+    
+    /*If the user is already logged in, then the user is redirected to the main profile page. This
+    is done with the help of session variables 'loggedin' and 'username' which store the state of
+    logged-inness, and the username of the logged in user.*/
+
     session_start();
+    
     if(isset($_SESSION['loggedin'])&&isset($_SESSION['username']))
     {
-    	echo "<script>window.alert('Please Log Out first.')</script>";
     	header('Location: profile');
     	exit;
     }
+
 ?>
 
 
